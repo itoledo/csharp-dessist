@@ -184,7 +184,8 @@ namespace csharp_dessist
                 ProjectWriter.EmitScriptProject(this, indent + "    ");
 
             // Basic SQL command
-            } else if (exec_type.StartsWith("Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask")) {
+            } else if (exec_type.StartsWith("Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask")
+                || exec_type == "Microsoft.ExecuteSQLTask") {
                 this.EmitSqlTask(indent);
 
             // Basic "SEQUENCE" construct - just execute things in order!
