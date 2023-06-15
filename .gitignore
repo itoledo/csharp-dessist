@@ -5,3 +5,4 @@ csharp-dessist/obj/
 packages
 *.user
 /.vs/csharp-dessist/FileContentIndex
+/.vs
