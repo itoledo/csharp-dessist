@@ -27,9 +27,9 @@ namespace csharp_dessist
             CSharpType = null;
             DefaultValue = o.GetChildByType("DTS:VariableValue").ContentValue;
             Comment = o.Description;
-            Namespace = o.Properties["Namespace"];
+            Namespace = o.Properties.ContainsKey("Namespace") ? o.Properties["Namespace"] : o.Attributes["DTS:Namespace"];
             IsGlobal = as_global;
-            VariableName = o.DtsObjectName;
+            VariableName = o.DtsObjectName ?? o.Attributes["DTS:ObjectName"];
 
             // Here are the DTS type codes I know
             if (DtsType == "3") {

@@ -76,8 +76,17 @@ namespace csharp_dessist
                 }
                 functions = flist;
             }
+            List<SsisObject> vars = new List<SsisObject>();
             var variables = from SsisObject c in o.Children where c.DtsObjectType == "DTS:Variable" select c;
-            WriteProgram(variables, functions, Path.Combine(output_folder, "program.cs"), projectname);
+            vars.AddRange(variables);
+
+            var containerVariables = o.Children.Where(c => c.DtsObjectType == "DTS:Variables");
+            foreach(var cont in containerVariables)
+            {
+                var newvars = from SsisObject c in cont.Children where c.DtsObjectType == "DTS:Variable" select c;
+                vars.AddRange(newvars);
+            }
+            WriteProgram(vars, functions, Path.Combine(output_folder, "program.cs"), projectname);
 
             // Next write the resources and the project file
             ProjectWriter.WriteResourceAndProjectFile(output_folder, projectname);
@@ -177,6 +186,9 @@ namespace csharp_dessist
                     Console.WriteLine("Help");
                 }
             }
+
+            if (o.DtsObjectName == null && o.Attributes.ContainsKey("DTS:ObjectName"))
+                o.DtsObjectName = o.Attributes["DTS:ObjectName"];
         }
 
         /// <summary>
